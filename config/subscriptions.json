@@ -1,0 +1,7 @@
+{
+    "subscription-list": [
+    "network",
+    "devices",
+    "updates"
+]
+}
