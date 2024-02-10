@@ -1,7 +1,9 @@
+const config = require("./config/config");
 const serverport = 3000;
 const app = require('express')();
-//const routes = require('./routes/router');
+const routes = require('./routes/router');
 const { json, urlencoded } = require('express');
+const mqttHandler = require("./mqtt/mqtt-handler");
 
 
 let version = "1.0.0.1";
@@ -9,10 +11,13 @@ let version = "1.0.0.1";
 app.use(urlencoded({extended: true}));
 app.use(json());
 
-// Connect routes to application
-//app.use("/", routes);
+const mqttClient = new mqttHandler();
+mqttClient.connect();
 
-app.get("/", (req, res)=>{
+// Connect routes to application
+app.use("/", routes);
+
+app.get("/", (req, res) => {
     res.status(200).end();
 });
 
