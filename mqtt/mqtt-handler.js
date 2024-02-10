@@ -4,14 +4,14 @@ const subscriptions = require("../config/subscriptions.json");
 class MqttHandler {
   constructor() {
     this.mqttClient = null;
-    this.host = 'mqtt://localhost:1883';
+    this.host = 'mqtt://localhost';
     this.username = 'YOUR_USER'; // mqtt credentials if these are needed to connect
     this.password = 'YOUR_PASSWORD';
   }
   
   connect() {
     // Connect mqtt with credentials (in case of needed, otherwise we can omit 2nd param)
-    this.mqttClient = mqtt.connect(this.host, { username: this.username, password: this.password });
+    this.mqttClient = mqtt.connect(this.host ); /*{ username: this.username, password: this.password }*/
 
     // Mqtt error calback
     this.mqttClient.on('error', (err) => {
@@ -25,14 +25,14 @@ class MqttHandler {
     });
 
     // mqtt subscriptions
-    for (let i=0; i<subscriptions['subscription-list'].length; i++){
-      this.mqttClient.subscribe(subscriptions['subscription-list'][i], {qos: 0});
-    }
+    
+      this.mqttClient.subscribe("/test", {qos: 0});
+    
     
 
     // When a message arrives, console.log it
     this.mqttClient.on('message', (topic, message) => {
-      console.log(topic.toString(), message.toString());
+      console.log(message.toString());
     });
 
     this.mqttClient.on('close', () => {
@@ -41,8 +41,8 @@ class MqttHandler {
   }
 
   // Sends a mqtt message to topic: mytopic
-  sendMessage(topic, message) {
-    this.mqttClient.publish(topic, message);
+  sendMessage(message) {
+    this.mqttClient.publish("/test", message);
   }
 }
 

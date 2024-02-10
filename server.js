@@ -21,6 +21,11 @@ app.get("/", (req, res) => {
     res.status(200).end();
 });
 
+app.post("/send-mqtt", function(req, res) {
+    mqttClient.sendMessage(req.body.message);
+    res.status(200).send("Message sent to mqtt");
+  });
+
 //Start the server
 app.listen(serverport, () => {
     console.log(`Server running on port ${serverport} v${version}`);
