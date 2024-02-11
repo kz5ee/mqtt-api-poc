@@ -1,28 +1,38 @@
 const router = require('express').Router();
 const devicesService = require("../services/devices.service");
+const mqttHandler = require("../mqtt/mqtt-handler");
+const mqttClient = new mqttHandler();
+mqttClient.connect();
 
 //#region Get known device list
-router.get('/devices', (req, res) => {
+router.get('/', (req, res) => {
     devicesService.getDeviceList()
     .then ( devices => {
-        res.send(200).json(devices)
+        res.json(devices)
     })
     .catch((e) => {
-        res.status(e.status).json({error: e.name, message: e.reason})
+        res.sendStatus(e.status).json({error: e.name, message: e.reason})
     })
 });
 //#endregion
 
 //#region Get details of a specific device
-router.get('/devices/:deviceId', (req, res) => {
+router.get('/:deviceId', (req, res) => {
     devicesService.getDevice(req.params.deviceId)
     .then ( device => {
-        res.send(200).json(device)
+        res.json(device)
     })
     .catch((e) => {
-        res.status(e.status).json({error: e.name, message: e.reason})
+        res.sendStatus(e.status).json({error: e.name, message: e.reason})
     })
 });
+//#endregion
+
+//#region Send message to device
+router.post("/:deviceId/send-mqtt", function(req, res) {
+    mqttClient.sendMessage(`/network/${req.params.deviceId}`, req.body.message);
+    res.send(`Message sent to mqtt:  ${req.body.message}`);
+  });
 //#endregion
 
 
