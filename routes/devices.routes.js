@@ -11,10 +11,19 @@ router.get('/devices', (req, res) => {
         res.status(e.status).json({error: e.name, message: e.reason})
     })
 });
-
-
 //#endregion
 
+//#region Get details of a specific device
+router.get('/devices/:deviceId', (req, res) => {
+    devicesService.getDevice(req.params.deviceId)
+    .then ( device => {
+        res.send(200).json(device)
+    })
+    .catch((e) => {
+        res.status(e.status).json({error: e.name, message: e.reason})
+    })
+});
+//#endregion
 
 
 module.exports = router;
