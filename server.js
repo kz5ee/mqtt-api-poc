@@ -5,6 +5,7 @@ const routes = require('./routes/router');
 const { json, urlencoded } = require('express');
 const mqttHandler = require("./mqtt/mqtt-handler");
 
+const topic ="/dev";
 
 let version = "1.0.0.1";
 
@@ -22,8 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/send-mqtt", function(req, res) {
-    mqttClient.sendMessage(req.body.message);
-    res.status(200).send("Message sent to mqtt");
+    mqttClient.sendMessage(topic, req.body.message);
+    res.status(200).send(`Message sent to mqtt:  ${req.body.message}`);
   });
 
 //Start the server

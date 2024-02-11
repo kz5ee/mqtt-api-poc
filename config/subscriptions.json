@@ -1,7 +1,6 @@
 {
     "subscription-list": [
-    "network",
-    "devices",
-    "updates"
+    "/test",
+    "/dev"
 ]
 }
