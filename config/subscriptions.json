@@ -1,6 +1,7 @@
 {
     "subscription-list": [
     "/test",
-    "/dev"
+    "/dev",
+    "/network/123456"
 ]
 }

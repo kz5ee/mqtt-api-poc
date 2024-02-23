@@ -10,7 +10,8 @@ async function getDevices(){
 
         //const data = helper.emptyOrRows(rows);
         //const meta = {page};
-        return rows;
+        const deviceList = rows.map(device => device.id);
+        return deviceList;
     }
     catch (e){
         return e;
@@ -28,7 +29,7 @@ async function getDevice(deviceId){
 
         //const data = helper.emptyOrRows(rows);
         //const meta = {page};
-        return rows;
+        return rows[0];
     }
     catch (e){
         return e;

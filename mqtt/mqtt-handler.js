@@ -29,13 +29,20 @@ class MqttHandler {
       this.mqttClient.subscribe(subscriptions['subscription-list'][i], {qos: 0});
       console.log(`Subscribed to ${subscriptions['subscription-list'][i]}`);
     }
-      
-    
-    
 
     // When a message arrives, console.log it
     this.mqttClient.on('message', (topic, message) => {
-      console.log(message.toString());
+      //With incoming messages that contain JSON, we have to wrap it with JSON.parse()
+      let incoming;
+      try{
+        incoming = JSON.parse(message);
+      }
+      catch {
+        console.log(message.toString());
+        return;
+      }
+      
+      console.log(incoming.message);
     });
 
     this.mqttClient.on('close', () => {

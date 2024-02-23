@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const devicesService = require("../services/devices.service");
-const mqttHandler = require("../mqtt/mqtt-handler");
-const mqttClient = new mqttHandler();
-mqttClient.connect();
+// const mqttHandler = require("../mqtt/mqtt-handler");
+// const mqttClient = new mqttHandler();
+// mqttClient.connect();
+const broker = require("../mqtt/mqtt-client");
 
 //#region Get known device list
 router.get('/', (req, res) => {
@@ -30,7 +31,8 @@ router.get('/:deviceId', (req, res) => {
 
 //#region Send message to device
 router.post("/:deviceId/send-mqtt", function(req, res) {
-    mqttClient.sendMessage(`/network/${req.params.deviceId}`, req.body.message);
+    //To send JSON data we need to use JSON.stringify()
+    broker.sendMessage(`/network/${req.params.deviceId}`, `${req.body.message}`);
     res.send(`Message sent to mqtt:  ${req.body.message}`);
   });
 //#endregion
